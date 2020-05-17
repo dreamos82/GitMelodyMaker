@@ -4,7 +4,7 @@ Let's your commits play a melody for you.
 
 This project is just an experiment, made more for fun than with serious purposes. 
 
-The idea behind it is try to see how it "sound" a melody created from git commits stats. 
+The idea behind it is try to see how a melody created from git commits stats "sound". 
 
 So far i'm using a very naive approeach, converting the stats to notes attributes using the mod operation (probably i will do something more elaborate in the future). 
 
