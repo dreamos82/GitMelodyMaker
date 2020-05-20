@@ -29,6 +29,8 @@ The idea behind is that the conversion will be made using the stats available in
 * number of files changed (*f*)
 
 Actually only one converter is implemented, based on the mod value of the commit stats. 
+
+### The ModConverter
 It is pretty naive. Given a tuple that is consisting of commit items values, so composed by the following values: *{a, d, l, f}*, the note is obtained in the following way:
 
 * *Octave :=  a%8*
