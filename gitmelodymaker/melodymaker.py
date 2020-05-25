@@ -5,6 +5,8 @@ from mingus.midi import midi_file_out
 from mingus.containers import Note
 from mingus.containers import Bar
 from mingus.containers import Track
+from mingus.containers import Composition
+
 import ConverterFactory as cf
 import datetime
 import sys
@@ -25,20 +27,23 @@ def main():
         target_file = "gitmelody" + str(curtime.year) + str(curtime.month) + str(curtime.hour) \
             + str(curtime.minute) + str(curtime.second) + ".mid"
 
-
-    
     commits = list(repo.iter_commits('master'))
     
+    timesignature = converter.getTimeSignature(commits)
+    tsValue = timesignature[0]/timesignature[1]
+    print(tsValue)
     print(len(commits))
     
     #nc = NoteContainer()
     bar = Bar()
     t = Track()
+    t2 = Track()
     dursum = 0;
+    c = Composition()
     for item in commits:
         #note_item = get_note_from_commit(item.stats.total)
         note_item = converter.getNoteFromCommit(item.stats.total)
-        if (dursum + 1/note_item[1] <= 1):
+        if (dursum + (1/note_item[1]) <= tsValue):
             dursum = dursum + 1/note_item[1]
             bar.place_notes(note_item[0], note_item[1])
         else:
@@ -46,7 +51,13 @@ def main():
             if(bar.space_left() > 0):
                 bar.place_rest(bar.space_left())                
             t.add_bar(bar)
+            second_line=converter.getChordOrArpeggio(bar)
+            t2.add_bar(second_line)
             bar = Bar()
+            bar.place_notes(note_item[0], note_item[1])
+         
+    c.add_track(t)
+    c.add_track(t2)
 
         #bar.place_notes(note_item[0], note_item[1])
         #t.add_notes(note_item[0])
@@ -57,7 +68,8 @@ def main():
         #print(item.stats.total)a
     
     #nc = NoteContainer(["A", "C", "E"])
-    midi_file_out.write_Track(target_file, t)
+    #midi_file_out.write_Track(target_file, t)
+    midi_file_out.write_Composition(target_file, c)
 
 if __name__ == "__main__":
     main()

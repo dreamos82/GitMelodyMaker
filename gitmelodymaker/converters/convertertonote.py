@@ -4,7 +4,8 @@ import abc
 class ConverterToNote(abc.ABC):
 
     notesLabels = [ 'C', 'D', 'E', 'F', 'G', 'A', 'B' ]
-
+    timeSignatures = [ [2,4], [6,8], [4,4] ]
+    
     @abstractmethod
     def getNoteFromCommit(self, commitItem):
         pass
@@ -23,6 +24,14 @@ class ConverterToNote(abc.ABC):
 
     @abstractmethod
     def getDuration(self, value):
+        pass
+
+    @abstractmethod
+    def getChordOrArpeggio(self, input_bar):
+        pass
+
+    @abstractmethod
+    def getTimeSignature(self, commits):
         pass
 
 
