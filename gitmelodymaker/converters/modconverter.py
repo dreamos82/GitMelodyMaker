@@ -7,10 +7,14 @@ import mingus.core.chords as chords
 import random
 
 class ModConverter(ConverterToNote):
+
+    timeSignature = None
     
     def getTimeSignature(self, commits):
         result = (commits[0].stats.total['lines']+commits[len(commits)-1].stats.total['lines'])%3
-        return self.timeSignatures[result]
+        self.timeSignature = self.timeSignatures[result]
+        print(self.timeSignature)
+        return self.timeSignature
     
     def getNoteFromCommit(self, commitItem):
         noteLabel = self.getNoteLabel(commitItem['lines'])
@@ -28,7 +32,13 @@ class ModConverter(ConverterToNote):
         return self.notesLabels[value % 7]
 
     def getDuration(self, value):
-        return (value%4)+1
+        current_duration = 1/self.allowedDurations[value%8]
+        if self.timeSignature != None:
+            tsRealValue = self.timeSignature[0] / self.timeSignature[1]
+            while current_duration > tsRealValue:
+                value = value + 1
+                current_duration = 1/self.allowedDurations[value%8]
+        return self.allowedDurations[value%8]
 
     def getAlteration(self, noteLabel, value):
         result = value%3
