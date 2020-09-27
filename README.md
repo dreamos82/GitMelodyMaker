@@ -42,11 +42,18 @@ The approach used is pretty naive. Given a tuple that is consisting of commit it
 
 This approach is temporary and it can change in any moment. 
 
-In case the duration of the note will be higher than the space left in the bar, so the gap will be filled with a rest, and the note added in a new bar.
+In case the duration of the note will be higher than the space left in the bar, the gap will be filled with the selected note or a rest for the duration left in the measure (it is randomly decided). And a new Bar item will be created.
 
 
 ### Adding new Converter
 
-TBD
+Converters implement the abstract class ConverterToNote. So first think if you want to create a convert is inherit from it:
+
+```python
+    from converters.convertertonote import ConverterToNote
+
+    class ModConverter(ConverterToNote):
+        #Your implementation here!
+```
 
 
